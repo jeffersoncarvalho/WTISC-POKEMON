@@ -22,6 +22,6 @@
 
 <h3>API Pokémon:</h3>
 <ul>
-<li><a href="https://pokeapi.co/api/v2/pokemon">API</a></li>
+<li><a href="https://pokeapi.co/api/v2/pokemon" target="_blank">API</a></li>
 </ul>
 
