@@ -70,9 +70,8 @@ export default class Pokedex extends Component {
         return (
             <div>
                 <h3>Pokédex</h3> ({this.state.count})
-                <table className='table table-striped table-sm table-bordered'
-                    style={{ marginTop: 20, width: '80%' }}
-                >
+                <table className='table table-striped table-sm table-bordered' 
+                       style={{ marginTop: 20, width: '80%' }}>
                     <thead className='thead-dark'>
                         <tr>
                             <th>ID</th>
