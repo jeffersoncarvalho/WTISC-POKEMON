@@ -40,14 +40,14 @@ export default class Pokedex extends Component {
 
     }
 
-    anterior(){
-        if(this.state.previous){
+    anterior() {
+        if (this.state.previous) {
             this.getPokemonData(this.state.previous)
         }
     }
 
-    proximo(){
-        if(this.state.next){
+    proximo() {
+        if (this.state.next) {
             this.getPokemonData(this.state.next)
         }
     }
@@ -68,14 +68,20 @@ export default class Pokedex extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{
+                marginTop: 10,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column'
+            }}>
                 <h3>Pokédex</h3> ({this.state.count})
-                <table className='table table-striped table-sm table-bordered' 
-                       style={{ marginTop: 20, width: '80%' }}>
+                <table className='table table-striped table-sm table-bordered'
+                    style={{ marginTop: 20, width: '80%' }}>
                     <thead className='thead-dark'>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
+                            <th style={{textAlign:'center',width:'20%'}}>ID</th>
+                            <th style={{textAlign:'center',width:'20%'}}>Nome</th>
                             <th colSpan='2'></th>
                         </tr>
                     </thead>
@@ -86,12 +92,12 @@ export default class Pokedex extends Component {
                         <tr>
                             <td colSpan='4'>
                                 <button className='btn btn-secondary'
-                                        onClick={()=>this.anterior()}>
+                                    onClick={() => this.anterior()}>
                                     Anterior
                                 </button>
                                 <button className='btn btn-secondary'
-                                        onClick={()=>this.proximo()} 
-                                        style={{ marginLeft: 20 }}>
+                                    onClick={() => this.proximo()}
+                                    style={{ marginLeft: 20 }}>
                                     Próximo
                                 </button>
                             </td>
