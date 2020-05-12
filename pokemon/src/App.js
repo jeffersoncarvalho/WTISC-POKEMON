@@ -5,6 +5,7 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
 import Home from './components/Home'
 import Pokedex from './components/pokedex/Pokedex'
 import Pokeball from './components/pokeball/Pokeball'
+import PokeArena from './components/pokearena/PokeArena'
 
 export default class App extends Component {
 
@@ -25,7 +26,7 @@ export default class App extends Component {
                 <li><Link to={'/'} className='nav-link'>Home</Link></li>
                 <li><Link to={'/pokedex'} className='nav-link'>Pokédex</Link></li>
                 <li><Link to={'/pokeball'} className='nav-link'>Pokéball</Link></li>
-                <li><span className='nav-link'>PokéArena</span></li>
+                <li><Link to={'/pokearena'} className='nav-link'>PokéArena</Link></li>
               </ul>
             </div>
           </nav>
@@ -34,6 +35,7 @@ export default class App extends Component {
             <Route exact path='/' component={Home}/>
             <Route path='/pokedex' component={Pokedex}/>
             <Route path='/pokeball' component={Pokeball}/>
+            <Route path='/pokearena' component={PokeArena}/>
           </Switch>
 
         </div>
