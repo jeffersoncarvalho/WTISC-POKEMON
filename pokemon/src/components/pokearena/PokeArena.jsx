@@ -28,6 +28,10 @@ export default class PokeArena extends Component {
         this.setState({ mensagem: 'A batalha vai começar!' })
     }
 
+    mudarEscolhido(index){
+        this.setState({escolhido:index})
+    }
+
     renderizarPokeball(){
         return this.state.pokeball.map(
             (pokemon,i)=>{
@@ -37,6 +41,80 @@ export default class PokeArena extends Component {
             }
         )
     }
+
+    renderizarDesafiantes(){
+        return this.state.desafiantes.map(
+            (pokemon,i)=>{
+                return <PokeArenaTableRow
+                    id = {pokemon.id}
+                />
+            }
+        )
+    }
+
+    renderizarArena(){
+
+        if(!this.state.pokeball || this.state.pokeball.length===0) return
+
+        let escolhido = this.state.pokeball[this.state.escolhido]
+        let desafiante = this.state.desafiantes[this.state.desafiante]
+
+        const imgURLDesafiante = 
+            `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${desafiante.id}.png`
+        const imgURLEscolhido = 
+            `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${escolhido.id}.png`
+        
+        
+        return(
+            <>
+                <div className='row' style={{background:`url(${background}) no-repeat center center`}}>
+                    
+                    <div className='col-12'>
+
+                        <div className='row'>
+                            
+                            <div className='col-12 text-right'>
+                                <span style={{textTransform:'capitalize'}}>
+                                    <b>{desafiante.nome} ({desafiante.life}/100)</b>
+                                </span>
+                                <img src={imgURLDesafiante} alt={desafiante.id}/>
+                            </div>
+
+                        </div>
+                        <div className='row'>
+                            <div className='col-12 text-left'>
+                                <img src={imgURLEscolhido} alt={escolhido.id}/>
+                                <span style={{textTransform:'capitalize'}}>
+                                    <b>{escolhido.nome} ({escolhido.life}/100)</b>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div className='row'>
+                    <div className='col-12 text-center' style={{padding:'0.5em'}}>
+                        <button className='btn btn-secondary'>
+                            Atacar
+                        </button>
+                    </div>
+                </div>
+
+                <div className='row'>
+                    <div className='col-12'>
+                        <div className='alert alert-warning' role='alert' style={{textTransform:'uppercase'}}>
+                            {this.state.mensagem}
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+
+
+    }
+
 
     render() {
         return (
@@ -65,10 +143,10 @@ export default class PokeArena extends Component {
                             borderRight: '1px solid #cecece',
                             paddingTop: '2em'
                         }}>
-                            Arena
+                            {this.renderizarArena()}
                         </div>
                         <div className='col-2' style={{ padding: '0.5em' }}>
-                            Desafiantes
+                            {this.renderizarDesafiantes()}
                         </div>
                     </div>
 
