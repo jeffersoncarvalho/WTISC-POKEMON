@@ -9,7 +9,8 @@ export default class PokemonArenaTableRow extends Component {
         
         return (
             <button className='btn btn-outline-light'
-                    style={{ padding: 0, margin: 0, borderRadius: 0, border: 'none' }}>
+                    style={{ padding: 0, margin: 0, borderRadius: 0, border: 'none' }}
+                    onClick={()=>this.props.mudarEscolhido(this.props.index)}>
 
                         <img src={imgUrl} alt={this.props.id}/>
             </button>

@@ -20,6 +20,8 @@ export default class PokeArena extends Component {
             desafiante: 0,
             mensagem: ''
         }
+
+        this.mudarEscolhido = this.mudarEscolhido.bind(this)
     }
 
     componentDidMount() {
@@ -37,6 +39,8 @@ export default class PokeArena extends Component {
             (pokemon,i)=>{
                 return <PokeArenaTableRow
                     id = {pokemon.id}
+                    mudarEscolhido = {this.mudarEscolhido}
+                    index = {i}
                 />
             }
         )
