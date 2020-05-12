@@ -12,11 +12,12 @@ export default class Pokedex extends Component {
     }
 
     componentDidMount() {
-        const url = 'https://pokeapi.co/api/v2/pokemon'
+        const url = sessionStorage.getItem('url')
         this.getPokemonData(url)
     }
 
     getPokemonData(url) {
+        sessionStorage.setItem('url',url)
         axios.get(url)
             .then(
                 (res) => {
