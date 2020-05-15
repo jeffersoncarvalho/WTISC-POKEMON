@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 export default class PokedexTableRow extends Component{
 
@@ -54,7 +55,11 @@ export default class PokedexTableRow extends Component{
                     <img src={imgUrl} alt={id}/>
                 </td>
                 <td style={{textAlign:'center', verticalAlign:'middle'}}>
-                    <button className='btn btn-primary'>Informações</button>
+                    <Link className='btn btn-primary'
+                          to={`/pokemoninfo/${id}`}
+                    >
+                        Informações
+                    </Link>
                     <button 
                         className='btn btn-danger'
                         onClick={()=>this.capturar(id,this.props.pokemon.name)}

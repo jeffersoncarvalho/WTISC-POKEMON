@@ -6,6 +6,7 @@ import Home from './components/Home'
 import Pokedex from './components/pokedex/Pokedex'
 import Pokeball from './components/pokeball/Pokeball'
 import PokeArena from './components/pokearena/PokeArena'
+import PokemonInfo from './components/pokemoninfo/PokemonInfo'
 
 export default class App extends Component {
 
@@ -36,6 +37,7 @@ export default class App extends Component {
             <Route path='/pokedex' component={Pokedex}/>
             <Route path='/pokeball' component={Pokeball}/>
             <Route path='/pokearena' component={PokeArena}/>
+            <Route path='/pokemoninfo/:pokeid' component={PokemonInfo}/>
           </Switch>
 
         </div>
