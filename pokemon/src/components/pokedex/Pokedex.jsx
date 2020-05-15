@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import Spinner from 'react-bootstrap/Spinner'
+
 
 import PokedexTableRow from './PokedexTableRow'
 
@@ -8,7 +10,7 @@ export default class Pokedex extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { count: 0, next: '', previous: '', pokemons: [] }
+        this.state = { count: 0, next: '', previous: '', pokemons: [], loading: true}
     }
 
     componentDidMount() {
@@ -17,7 +19,8 @@ export default class Pokedex extends Component {
     }
 
     getPokemonData(url) {
-        sessionStorage.setItem('url',url)
+        this.setState({loading:true})
+        sessionStorage.setItem('url', url)
         axios.get(url)
             .then(
                 (res) => {
@@ -27,7 +30,8 @@ export default class Pokedex extends Component {
                             count: res.data.count,
                             next: res.data.next,
                             previous: res.data.previous,
-                            pokemons: res.data.results
+                            pokemons: res.data.results,
+                            loading:false
                         }
                     )
                 }
@@ -38,6 +42,7 @@ export default class Pokedex extends Component {
                     console.log(error)
                 }
             )
+            
 
     }
 
@@ -67,6 +72,48 @@ export default class Pokedex extends Component {
         )
     }
 
+    renderizarConteudo() {
+
+        if (this.state.loading) {
+            return (
+                <tbody>
+                    <tr> 
+                        <td colSpan='4'style={{textAlign:'center',verticalAlign:'middle',padding:'20px'}}>
+                            <Spinner animation='border' /> loading ...
+                        </td>
+                    </tr>
+                </tbody>
+            )
+        }
+        return (
+            <>
+            <tbody>
+                {this.montarTabela()}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan='4' style={{ textAlign: 'center' }}>
+                        <button className='btn btn-secondary'
+                            onClick={() => this.anterior()}
+                            disabled={!this.state.previous}
+                        >
+                            Anterior
+                                </button>
+                        <button className='btn btn-secondary'
+                            onClick={() => this.proximo()}
+                            style={{ marginLeft: 20 }}
+                            disabled={!this.state.next}
+                        >
+                            Próximo
+                                </button>
+                    </td>
+                </tr>
+            </tfoot>
+            </>
+        )
+
+    }
+
     render() {
         return (
             <div style={{
@@ -81,29 +128,12 @@ export default class Pokedex extends Component {
                     style={{ marginTop: 20, width: '80%' }}>
                     <thead className='thead-dark'>
                         <tr>
-                            <th style={{textAlign:'center',width:'20%'}}>ID</th>
-                            <th style={{textAlign:'center',width:'20%'}}>Nome</th>
+                            <th style={{ textAlign: 'center', width: '20%' }}>ID</th>
+                            <th style={{ textAlign: 'center', width: '20%' }}>Nome</th>
                             <th colSpan='2'></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.montarTabela()}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colSpan='4'>
-                                <button className='btn btn-secondary'
-                                    onClick={() => this.anterior()}>
-                                    Anterior
-                                </button>
-                                <button className='btn btn-secondary'
-                                    onClick={() => this.proximo()}
-                                    style={{ marginLeft: 20 }}>
-                                    Próximo
-                                </button>
-                            </td>
-                        </tr>
-                    </tfoot>
+                    {this.renderizarConteudo()}
                 </table>
             </div>
         )
