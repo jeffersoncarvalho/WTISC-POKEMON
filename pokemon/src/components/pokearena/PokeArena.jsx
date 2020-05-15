@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import background from '../../img/battlegrass.png'
 import PokeArenaTableRow from './PokeArenaTableRow'
 
+const delay = (ms) => new Promise( res => setTimeout(res,ms))
+
 export default class PokeArena extends Component {
 
     constructor(props) {
@@ -18,7 +20,8 @@ export default class PokeArena extends Component {
             desafiantes: equipeRocket,
             escolhido: 0,
             desafiante: 0,
-            mensagem: ''
+            mensagem: '',
+            atacarBtnDisabled: false
         }
 
         this.mudarEscolhido = this.mudarEscolhido.bind(this)
@@ -34,6 +37,58 @@ export default class PokeArena extends Component {
         this.setState({escolhido:index})
     }
 
+    async atacar(){
+
+        this.setState({atacarBtnDisabled:true})
+
+        let escolhido = this.state.pokeball[this.state.escolhido]
+        let desafiante = this.state.desafiantes[this.state.desafiante]
+
+        this.setState({mensagem:`${escolhido.nome} atacou! 20 de dano!`})
+        await delay(2000)
+        desafiante.life = (desafiante.life - 20 < 0)? 0 : desafiante.life - 20 
+        
+        if(desafiante.life === 0){
+            this.setState({mensagem:`${desafiante.nome} desmaiou!`})
+            await delay(1000)
+            const index = this.proximoDesafiante()
+            if(index >= 0){
+                this.setState({desafiante:index})
+                desafiante = this.state.desafiantes[this.state.desafiante]
+                this.setState({mensagem:`${desafiante.nome} tomou seu lugar!`})
+                await delay(1000)
+            }else{
+                this.setState({mensagem:`Parabéns, você venceu!`})
+                await delay(1000)
+                this.reiniciarDesafiantes();
+                this.setState({mensagem:`A batalha recomeça!`})
+                await delay(1000)
+            }
+            
+        }
+        this.setState({atacarBtnDisabled:false})
+    }
+
+    proximoDesafiante(){
+        let desafiantes = this.state.desafiantes
+
+        for (let index = 0; index < desafiantes.length; index++) {
+            const desafiante = desafiantes[index];
+            if(desafiante.life > 0) return index
+        }
+        return -1
+    }
+
+    reiniciarDesafiantes(){
+        let desafiantes = this.state.desafiantes
+
+        for (let index = 0; index < desafiantes.length; index++) {
+            const desafiante = desafiantes[index];
+            desafiante.life = 100
+        }
+        this.setState({desafiante:0})
+    }
+
     renderizarPokeball(){
         return this.state.pokeball.map(
             (pokemon,i)=>{
@@ -41,6 +96,7 @@ export default class PokeArena extends Component {
                     id = {pokemon.id}
                     mudarEscolhido = {this.mudarEscolhido}
                     index = {i}
+                    jogador = {true}
                 />
             }
         )
@@ -51,6 +107,7 @@ export default class PokeArena extends Component {
             (pokemon,i)=>{
                 return <PokeArenaTableRow
                     id = {pokemon.id}
+                    life = {pokemon.life}
                 />
             }
         )
@@ -100,7 +157,10 @@ export default class PokeArena extends Component {
 
                 <div className='row'>
                     <div className='col-12 text-center' style={{padding:'0.5em'}}>
-                        <button className='btn btn-secondary'>
+                        <button className='btn btn-secondary'
+                                onClick={()=>this.atacar()}
+                                disabled = {this.state.atacarBtnDisabled}
+                        >
                             Atacar
                         </button>
                     </div>
@@ -139,7 +199,7 @@ export default class PokeArena extends Component {
                 }}>
 
                     <div className='row'>
-                        <div className='col-2' style={{ padding: '0.5em' }}>
+                        <div className='col-2' style={{ padding: '0.5em', textAlign:'center' }}>
                             {this.renderizarPokeball()}
                         </div>
                         <div className='col-8' style={{
@@ -149,7 +209,7 @@ export default class PokeArena extends Component {
                         }}>
                             {this.renderizarArena()}
                         </div>
-                        <div className='col-2' style={{ padding: '0.5em' }}>
+                        <div className='col-2' style={{ padding: '0.5em', textAlign:'center' }}>
                             {this.renderizarDesafiantes()}
                         </div>
                     </div>
